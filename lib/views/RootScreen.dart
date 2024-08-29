@@ -1,22 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:h_flutter_example_project/controllers/NumberViewModel.dart';
-import 'package:h_flutter_example_project/widgets/NumberWidget.dart';
+import 'package:h_flutter_example_project/controllers/CoffeeViewModel.dart';
+import 'package:h_flutter_example_project/models/CoffeeItem.dart';
+import 'package:h_flutter_example_project/widgets/CoffeeWidget.dart';
 import 'package:provider/provider.dart';
 
-class Rootscreen extends StatelessWidget {
+class Rootscreen extends StatefulWidget {
   const Rootscreen({super.key});
 
   @override
+  _RootState createState() => _RootState();
+}
+
+class _RootState extends State<Rootscreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CoffeeViewModel>(context, listen: false).fetchCoffeeItems();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<NumberViewModel>(builder: (context, viewModel, child) {
+    return Consumer<CoffeeViewModel>(builder: (context, viewModel, child) {
       return Container(
         color: Colors.white,
         child: ListView.builder(
-            itemCount: viewModel.numberItems.length,
+            itemCount: viewModel.coffeeItems.length,
             itemBuilder: (context, index) {
-              final coffeeItem = viewModel.numberItems[index];
-              return NumberWidget(numberItem: coffeeItem, index: index + 1);
+              final coffeeItem = viewModel.coffeeItems[index];
+              return CoffeeWidget(coffeeItem: coffeeItem, index: index + 1);
             }),
       );
     });

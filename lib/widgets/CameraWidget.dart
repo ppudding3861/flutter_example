@@ -1,12 +1,13 @@
 import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class CameraWidget extends StatefulWidget {
   String? imagePath;
-  final Function(String?) setMethod; // 명확히 타입을 지정합니다.
+  Function? setMethod;
 
-  CameraWidget({required this.imagePath, required this.setMethod, Key? key}) : super(key: key);
+  CameraWidget({required this.imagePath, required this.setMethod});
 
   @override
   _CameraWidgetState createState() => _CameraWidgetState();
@@ -16,6 +17,8 @@ class _CameraWidgetState extends State<CameraWidget> {
   late CameraController _controller;
   Future<void>? _initializeControllerFuture;
 
+  _CameraWidgetState();
+
   @override
   void initState() {
     super.initState();
@@ -23,14 +26,12 @@ class _CameraWidgetState extends State<CameraWidget> {
   }
 
   Future<void> _initializeCamera() async {
-    try {
-      final cameras = await availableCameras();
-      _controller = CameraController(cameras[0], ResolutionPreset.high);
-      _initializeControllerFuture = _controller.initialize();
-      setState(() {});
-    } catch (e) {
-      print('카메라 초기화 실패: $e');
-    }
+    final cameras = await availableCameras();
+    _controller = CameraController(cameras[0], ResolutionPreset.high);
+    _initializeControllerFuture = _controller.initialize();
+    setState(() {
+
+    });
   }
 
   @override
@@ -52,7 +53,6 @@ class _CameraWidgetState extends State<CameraWidget> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.connectionState == ConnectionState.done) {
-                // 이미지를 표시하거나 카메라 프리뷰를 표시
                 if (widget.imagePath != null) {
                   return Image.file(File(widget.imagePath!), fit: BoxFit.cover);
                 }
@@ -63,26 +63,21 @@ class _CameraWidgetState extends State<CameraWidget> {
             },
           ),
         ),
-        const SizedBox(height: 16),
-        widget.imagePath == null
-            ? FloatingActionButton(
+        widget.imagePath == null ?
+        FloatingActionButton(
           onPressed: () async {
             try {
               await _initializeControllerFuture;
               final image = await _controller.takePicture();
-              widget.setMethod(image.path); // 이미지 경로를 전달
+              widget.setMethod!(image.path);
             } catch (e) {
-              print('이미지 캡처 실패: $e');
+              print(e);
             }
           },
           child: const Icon(Icons.camera),
-        )
-            : IconButton(
-          icon: const Icon(Icons.cancel_presentation),
-          onPressed: () {
-            widget.setMethod(null); // 이미지 경로를 초기화 (null 전달)
-          },
-        ),
+        ) : IconButton(icon: const Icon(Icons.cancel_presentation) , onPressed: (){
+          widget.setMethod!();
+        })
       ],
     );
   }

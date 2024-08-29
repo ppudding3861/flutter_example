@@ -1,31 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'NumberItem.dart';
+part of 'CoffeeItem.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NumberItemAdapter extends TypeAdapter<NumberItem> {
+class CoffeeItemAdapter extends TypeAdapter<CoffeeItem> {
   @override
   final int typeId = 0;
 
   @override
-  NumberItem read(BinaryReader reader) {
+  CoffeeItem read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return NumberItem(
+    return CoffeeItem(
       title: fields[0] as String?,
       description: fields[1] as String?,
-      phoneNumber: fields[2] as String?,
+      ingredients: (fields[2] as List?)?.cast<String>(),
       image: fields[3] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, NumberItem obj) {
+  void write(BinaryWriter writer, CoffeeItem obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -33,7 +33,7 @@ class NumberItemAdapter extends TypeAdapter<NumberItem> {
       ..writeByte(1)
       ..write(obj.description)
       ..writeByte(2)
-      ..write(obj.phoneNumber)
+      ..write(obj.ingredients)
       ..writeByte(3)
       ..write(obj.image);
   }
@@ -44,7 +44,7 @@ class NumberItemAdapter extends TypeAdapter<NumberItem> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NumberItemAdapter &&
+      other is CoffeeItemAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

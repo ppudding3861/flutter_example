@@ -1,69 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:h_flutter_example_project/views/AddNumberScreen.dart';
-import 'package:h_flutter_example_project/views/FavoriteNumberListScreen.dart';
+import 'package:h_flutter_example_project/views/AddCoffeeScreen.dart';
+import 'package:h_flutter_example_project/views/FavoriteCoffeeListScreen.dart';
 import 'package:h_flutter_example_project/views/RootScreen.dart';
-import 'package:provider/provider.dart';
 
-import '../themes/ThemeProvider.dart';
-
-class Layout extends StatefulWidget {
-  const Layout({super.key});
+class Layout extends StatefulWidget{
+  Layout({super.key});
 
   @override
   LayoutState createState() => LayoutState();
 }
 
-class LayoutState extends State<Layout> {
-  int _currentIndex = 0; // 변수명 수정
 
-  final List<Widget> _pages = [
-    const Rootscreen(),
-     FavoriteNumberListScreen(),
-     AddNumberScreen(),
-  ];
+class LayoutState extends State<Layout>{
+  int _currunIndex = 0;
 
-  void _onItemTapped(int index) {
+
+  void _onItemTapped(int index){
     setState(() {
-      _currentIndex = index;
+      _currunIndex = index;
     });
   }
 
+  final List<Widget> _pages = [
+    const Rootscreen(),
+    FavoriteCoffeeListScreen(),
+    AddCoffeeScreen()
+  ];
+
   @override
   Widget build(BuildContext context) {
-
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
-      appBar: AppBar(
-          title: const Text("전화번호"),
-        actions: [
-          IconButton(
-            icon: Icon(themeProvider.themeMode == ThemeMode.light ? Icons.dark_mode : Icons.light_mode),
-            onPressed: () {
-              themeProvider.toggleTheme();
-            },
-          ),
-        ],
-      ),
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: "Favorite",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: "main",
-          ),
-        ],
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
+      // Scaffold로 변경
+        appBar: AppBar(title: const Text("Coffee Cards")), // AppBar 추가
+        body: _pages[_currunIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "home"
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.coffee),
+                label: "Favorite"
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.add),
+                label: "main"
+            ),
+          ],
+          currentIndex: _currunIndex,
+          onTap: _onItemTapped,
+        )
     );
   }
 }

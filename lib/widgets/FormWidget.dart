@@ -3,31 +3,31 @@ import 'package:flutter/material.dart';
 
 class FormWidget extends StatefulWidget {
   String? value;
-  String hintText; // 힌트 텍스트 추가
+  // string 타입을 인자로 받을 수 있도록 설정
   Function(String?) setValue;
 
-  FormWidget({required this.value, required this.setValue, required this.hintText});
+  FormWidget({required this.value,required this.setValue});
 
   @override
   _FormState createState() => _FormState();
 }
 
+
 class _FormState extends State<FormWidget> {
+
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: widget.value,
-      decoration: InputDecoration(
-        labelText: widget.hintText,
-        hintText: widget.hintText, // 전달된 힌트 텍스트를 표시
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
+      decoration: const InputDecoration(label:Text("값을 입력하세요")),
+      validator: (value){
+        if(value == null || value.isEmpty){
           return "값을 입력해주세요";
         }
         return null;
       },
-      onSaved: (value) => widget.setValue(value),
+      onSaved: widget.setValue,
     );
   }
 }
